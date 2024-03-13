@@ -31,13 +31,18 @@ public class Grades {
        5. Fix the issue.
        6. Transform the algorithm to <strong>use</strong> the generic one from Algorithms.java, as instructed in the readme file.
       */
+
+      /*
       int i = 0;
-      while (i <= grades.length/2) {
+      while (i < grades.length/2) {
          int temp = grades[i];
          grades[i] = grades[grades.length-i-1];
          grades[grades.length-i-1] = temp;
          i++;
      }
+     */
+     Algorithms.reverse(grades);
+
    }
 
    /**
@@ -52,15 +57,22 @@ public class Grades {
        5. Fix the issue.
        6. Transform the algorithm to <strong>use</strong> the generic one from Algorithms.java as instructed in the readme file.
       */
-      int i = grades.length-1;
-      while (i > 0) {
-         if (grades[i] < grades[i-1]) {
-            int tmp = grades[i];
-            grades[i] = grades[i-1];
-            grades[i-1] = tmp;
-         }
-         i--;
+
+      /*
+      int i = 0;
+      int j = 0;
+      for(i = 0; i < grades.length - 1; i++){
+         for(j = 0; j < grades.length - 1 - i; j++){
+            if (grades[j] > grades[j+1]) {
+               int tmp = grades[j];
+               grades[j] = grades[j+1];
+               grades[j+1] = tmp;
+            }
+         } 
       }
+      */
+      
+      Algorithms.sort(grades);
    }
 
    /**
