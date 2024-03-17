@@ -1,16 +1,5 @@
 package oy.tol.tra;
 
-/**
- * An implementation of the StackInterface.
- * <p>
- * TODO: Students, implement this so that the tests pass.
- * 
- * Note that you need to implement construtor(s) for your concrete StackImplementation, which
- * allocates the internal Object array for the Stack:
- * - a default constructor, calling the StackImplementation(int size) with value of 10.
- * - StackImplementation(int size), which allocates an array of Object's with size.
- *  -- remember to maintain the capacity and/or currentIndex when the stack is manipulated.
- */
 public class StackImplementation<E> implements StackInterface<E> {
 
    private Object [] itemArray;
@@ -23,8 +12,7 @@ public class StackImplementation<E> implements StackInterface<E> {
     * @throws StackAllocationException
     */
    public StackImplementation() throws StackAllocationException {
-      // TODO: call the constructor with size parameter with default size of 10.
-      
+      this(DEFAULT_STACK_SIZE);
    }
 
    /** TODO: Implement so that
@@ -35,49 +23,79 @@ public class StackImplementation<E> implements StackInterface<E> {
     * @throws StackAllocationException If cannot allocate room for the internal array.
     */
    public StackImplementation(int capacity) throws StackAllocationException {
-      
+      if (capacity < 2) {
+         throw new StackAllocationException("Error!");
+      }
+      try {  
+         itemArray = new Object[capacity];  
+         this.capacity = capacity;  
+         currentIndex = -1;
+      } catch (OutOfMemoryError e) {  
+         throw new StackAllocationException("Error!");
+      }
    }
 
    @Override
    public int capacity() {
-      // TODO: Implement this
-      
+      return capacity;
    }
 
    @Override
    public void push(E element) throws StackAllocationException, NullPointerException {
-      // TODO: Implement this
-               
+      if (currentIndex >= capacity - 1) {
+         try {
+            int Capacity2 = 2 * capacity;
+            Object [] Array2 = new Object[Capacity2];
+            for(int i = 0; i < capacity; i++){
+               Array2[i] = itemArray[i];
+            };
+            itemArray = Array2;
+            capacity = Capacity2;
+         } catch (OutOfMemoryError e) {
+            throw new StackAllocationException("Error!");
+         }
+      }
+      if (element == null) {
+         throw new NullPointerException("Error! The input element cannot be empty!");
+      }
+      itemArray[currentIndex+1] = element;
+      currentIndex++;
    }
 
    @SuppressWarnings("unchecked")
    @Override
    public E pop() throws StackIsEmptyException {
-      
+      if (currentIndex == -1) {
+         throw new StackIsEmptyException("Stack is empty!");
+      }
+      Object popElement = itemArray[currentIndex];
+      currentIndex--;
+      return (E) popElement;
    }
 
    @SuppressWarnings("unchecked")
    @Override
    public E peek() throws StackIsEmptyException {
-      
+      if (currentIndex == -1) {
+         throw new StackIsEmptyException("Stack is empty!");
+      }
+      Object peekElement = itemArray[currentIndex];
+      return (E) peekElement;
    }
 
    @Override
    public int size() {
-      // TODO: Implement this
-      
+      return currentIndex + 1;
    }
 
    @Override
    public void clear() {
-      // TODO: Implement this
-      
+      currentIndex = -1;
    }
 
    @Override
    public boolean isEmpty() {
-      // TODO: Implement this
-      
+      return currentIndex == -1;
    }
 
    @Override
