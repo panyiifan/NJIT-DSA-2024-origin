@@ -11,13 +11,13 @@ public class KeyValueBSearchTree<K extends Comparable<K>, V> implements Dictiona
 
     @Override
     public Type getType() {
-        return Type.NONE;
+        return Type.BST;
     }
 
     @Override
     public int size() {
         // TODO: Implement this
-        return 0;
+        return count;
     }
 
     /**
@@ -50,19 +50,39 @@ public class KeyValueBSearchTree<K extends Comparable<K>, V> implements Dictiona
     public boolean add(K key, V value) throws IllegalArgumentException, OutOfMemoryError {
         // TODO: Implement this
         // Remember null check.
+        if(key == null || value == null){
+            throw new IllegalArgumentException("Cannot be null!");
+        }
         // If root is null, should go there.
-        
+        TreeNode<K, V> newNode = new TreeNode<>(key, value);
+            if(root == null){
+                root = newNode;  
+                count++;  
+                maxTreeDepth = 1;
+                return true;
+            }
+
             // update the root node. But it may have children
             // so do not just replace it with this new node but set
             // the keys and values for the already existing root.
-            
-        return false;
-    }
+        int newOne = root.insert(key, value, key.hashCode());
+        if (newOne == 1) {  
+            if(TreeNode.currentAddTreeDepth > maxTreeDepth){
+                maxTreeDepth = TreeNode.currentAddTreeDepth;
+            }
+            TreeNode.currentAddTreeDepth = 0;
+            count++; 
+        } 
+        return true;
+    }   
 
     @Override
     public V find(K key) throws IllegalArgumentException {
-        // TODO: Implement this. //Think about this
-        return (null);
+        // TODO: Implement this.
+        if(key == null){
+            throw new IllegalArgumentException("Cannot be null!");
+        }
+        return (root.find(key,key.hashCode()));
     }
 
     @Override
