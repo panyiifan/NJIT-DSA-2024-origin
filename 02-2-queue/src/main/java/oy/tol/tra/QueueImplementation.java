@@ -34,6 +34,9 @@ public QueueImplementation(int capacity) throws QueueAllocationException {
 
    @Override
    public void enqueue(E element) throws QueueAllocationException, NullPointerException {
+      if (element == null){
+        throw new NullPointerException("Error! The input element cannot be empty!");
+      }
       if (size >= capacity){
         try {
             int Capacity2 = 2 * capacity;
@@ -56,9 +59,6 @@ public QueueImplementation(int capacity) throws QueueAllocationException {
             throw new QueueAllocationException("Error!");
         }
       }
-      if (element == null){
-        throw new NullPointerException("Error! The input element cannot be empty!");
-      }
       itemArray[tail] = element;
       if (tail == capacity-1){
         tail = 0;
@@ -75,6 +75,7 @@ public QueueImplementation(int capacity) throws QueueAllocationException {
          throw new QueueIsEmptyException("Queue is empty!");
       }  
       Object dequeueElement = itemArray[head];
+      itemArray[head] = null;
       if (head == capacity-1){
         head = 0;
       }else{
