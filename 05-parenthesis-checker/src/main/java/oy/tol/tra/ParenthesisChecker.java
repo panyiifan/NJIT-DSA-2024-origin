@@ -52,6 +52,18 @@ public class ParenthesisChecker {
       // for each character in the input string
       //   if character is an opening parenthesis -- one of "([{"
       //      push it into the stack (check for failure and throw an exception if so)
+      int count = 0;
+      for(int i = 0; i < fromString.length(); i++){
+         char current = fromString.charAt(i);
+         if(current == '(' || current == '[' || current == '{'){
+            try {
+               stack.push(current);
+               count++;  
+            } catch (Exception e) {
+               throw new ParenthesesException("Error!", ParenthesesException.STACK_FAILURE);
+            }
+         }
+         
       //   else if character is a closing parenthesis -- one of ")]}"
       //      pop the latest opening parenthesis from the stack
       //      if the popped item is null
@@ -59,7 +71,26 @@ public class ParenthesisChecker {
       //      check the popped opening parenthesis against the closing parenthesis read from the string
       //      if they do not match -- opening was { but closing was ], for example.
       //         throw an exception, wrong kind of parenthesis were in the text (e.g. "asfa ( asdf } sadf")
+         else if(current == ')' || current == ']' || current == '}'){
+            if (stack.isEmpty()){
+               throw new ParenthesesException("Error! There are too many closing parentheses!",ParenthesesException.TOO_MANY_CLOSING_PARENTHESES);
+            }
+            char top = stack.pop();
+            count++;
+            if ((current == ')' && top != '(') || 
+            (current == ']' && top != '[') || 
+            (current == '}' && top != '{')) {
+               throw new ParenthesesException("Error! Don't match!",ParenthesesException.PARENTHESES_IN_WRONG_ORDER);
+            }
+         }
+      }
+
       // if the stack is not empty after all the characters have been handled
-      //   throw an exception since the string has more opening than closing parentheses.
+      //   throw an exception since the string has more opening than closing parentheses. 
+      if (!stack.isEmpty()){
+         throw new ParenthesesException("The string has more opening than closing parentheses.",ParenthesesException.TOO_FEW_CLOSING_PARENTHESES);
+      }
+      return count;
    }
+
 }
