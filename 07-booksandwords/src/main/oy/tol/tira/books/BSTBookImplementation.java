@@ -97,15 +97,14 @@ public class BSTBookImplementation implements Book {
             uniqueWordCount++;
             return new TreeNode(word);
         }
-        int hash1 = calcHash(word);
-        int hash2 = calcHash(node.word);
-        if (hash1 < hash2) {
-            node.left = addToTree(node.left, word);
-        } else if (hash1 > hash2) {
-            node.right = addToTree(node.right, word);
-        } else {
-            node.count++;
-        }
+        int compare = word.compareTo(node.word);  
+        if (compare < 0) {  
+            node.left = addToTree(node.left, word);  
+        } else if (compare > 0) {  
+            node.right = addToTree(node.right, word); 
+        } else {  
+            node.count++;  
+        }  
         return node;
     }
 
@@ -134,14 +133,6 @@ public class BSTBookImplementation implements Book {
         System.out.println("Count of words to ignore:    " + filter.ignoreWordCount());
         System.out.println("Ignored words count:      " + ignoredWordsTotal);
         System.out.println("\nInformation for BST implementation");
-    }
-
-    private int calcHash(String key) {
-        int hash = 1;
-        for (char c : key.toCharArray()) {
-            hash = hash * 31 + c;
-        }
-        return hash;
     }
 
     private int fillArray(TreeNode node, TreeNode[] array, int index) {
